@@ -48,7 +48,7 @@ for i in statelist:
 							
 	    except Exception as e:
 		print e
-		print i,j,k,l
+		print i
 		driver.back()
 		sleep(6)
 		continue
