@@ -7,4 +7,5 @@ codesamples
 4. jenkins 
 5. aws ec2 
 6. unetbootin
+7. multithreading and pooling in python
 
