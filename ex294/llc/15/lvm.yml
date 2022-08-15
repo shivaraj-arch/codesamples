@@ -1,0 +1,27 @@
+---
+- name: lvm
+  tasks:
+  - lvol:
+      name: data
+      vg: research
+      size: 1.5g
+
+  - filesystem:
+      fstype: ext4
+      dev: /dev/research/data
+  
+  - debug:
+      msg: VG Does not exist
+    when: ansible_lvm.vgs.research is not defined
+
+  - debug:
+      msg: LV cannot be created with this VG
+    when: ansible_lvm.vgs.research.size_g < 1.5
+
+  - lvol:
+      name: data
+      vg: research
+      size: .5g
+    when: ansible_lvm.vgs.research.size_g < 1.5
+
+

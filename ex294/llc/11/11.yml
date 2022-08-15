@@ -1,0 +1,21 @@
+---
+- name: hwreport
+  hosts: localhost
+  
+  tasks:
+    #- name: download file
+    #  get_url:
+    #    - src:
+    #      dest: hwreports.txt
+
+    - name:
+      replace:
+        replace: "{{ item.dest }}"
+        regexp: "{{ item.src }}"
+        dest: hwreports.txt
+      with_items:
+        - src: "bios"
+          dest: "{{ ansible_bios | default('NONE',true) }}"
+        - src: "fqdn"
+          dest: "{{ ansible_fqdn }}"
+

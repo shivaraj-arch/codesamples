@@ -1,0 +1,5 @@
+#ansible localhost -m user -b -a "name=automation state=present password='{{ 'automation' | password_hash('sha512') }}'" -K
+#ansible localhost -m user -b -a "name=automation generate_ssh_key=yes ssh_key_file='/home/automation/automation_id_rsa'" -K
+#ansible all -m user -b -a "user=automation state=present" -u devops
+#ansible all -m authorized_key -a "user=automation key='{{ lookup('file','id_rsa.pub') }}' state=present" -u devops -b -vvvvv
+ansible all -m copy -b -a "content='automation ALL\=\(ALL\) NOPASSWD\: ALL' dest=/etc/sudoers" -u devops

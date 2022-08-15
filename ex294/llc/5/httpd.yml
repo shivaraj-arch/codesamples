@@ -1,0 +1,8 @@
+---
+- name: user role 
+  hosts: dev
+
+  roles:
+    - apache
+  tasks:
+        

@@ -1,0 +1,34 @@
+---
+# tasks file for apache
+- name: install
+  yum:
+    name:
+      - "{{ web_pkg }}"
+      - "{{ firewall_pkg }}"
+    state: latest
+ 
+- name: httpd enable
+  service:
+      name: "{{ web_svc }}"
+      state: started
+      enabled: true
+
+- name: firewall enable
+  service:
+      name: "{{ firewall_svc }}"
+      state: started
+      enabled: true
+
+- name: firewall allows httpd
+  firewalld:
+    state: enabled
+    permanent: true
+    immediate: yes
+    service: "{{ rule }}"
+
+- name: copy template
+  template:
+        src: roles/apache/templates/index.html.j2
+        dest: /var/www/html/index.html  
+  notify: restart httpd
+    

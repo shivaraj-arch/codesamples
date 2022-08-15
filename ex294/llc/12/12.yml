@@ -1,0 +1,10 @@
+---
+- name: replace
+  hosts: dev
+  tasks:
+    - name: replace
+      replace:
+        replace: "Development"
+        regexp: ".*"
+        dest: /home/student/issue
+      when: inventory_hostname in groups['dev']

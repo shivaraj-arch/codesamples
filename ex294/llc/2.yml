@@ -1,0 +1,3 @@
+#yum-pack.sh
+# clarification: gpgkey vs rpm_key
+ansible all -m yum_repository -a "name='EX407', description='Ex407 Description', baseurl='http', gpgcheck=yes" -m rpm_key -a "key='http', state=enabled"  

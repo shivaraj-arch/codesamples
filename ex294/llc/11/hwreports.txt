@@ -1,0 +1,2 @@
+NONE
+workstation.lab.example.com
