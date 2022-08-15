@@ -1,0 +1,12 @@
+---
+- name: selinux
+  hosts: webservers
+  become: true
+  pre_tasks:
+    - shell: "setsebool -P httpd_can_network_connect 1"
+  roles:
+    - rhel-system-roles.selinux
+
+
+
+

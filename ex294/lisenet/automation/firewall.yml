@@ -1,0 +1,13 @@
+---
+    - name: open firewall http
+      firewalld:
+       port: 80/tcp
+       permanent: yes
+       immediate: yes
+       state: enabled
+    - name: close firewall https
+      firewalld:
+       port: 443/tcp
+       permanent: yes
+       immediate: yes
+       state: disabled

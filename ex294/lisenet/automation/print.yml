@@ -1,0 +1,51 @@
+---
+- name: open ports in backend
+  hosts: webservers
+  become: true
+  tasks:
+    - include_tasks: firewall.yml
+    - include_tasks:  httpd.yml
+    - add_host:
+       name: backend 
+       servers:
+        - name: "{{ ansible_hostname }}"
+          address: "{{ ansible_default_ipv4.address }}:80"
+    - set_fact:
+       back_servers:
+        - name: "{{ ansible_hostname }}"
+          address: "{{ ansible_default_ipv4.address }}:80"
+    - name: task of printing
+      debug:
+        msg: "The variable is  {{ hostvars['backend'] }}"
+
+- name: load balance
+  hosts: proxy
+  become: true
+  pre_tasks:
+    - include_tasks:  firewall.yml
+    #- include_tasks:  httpd.yml
+    - set_fact:
+        haproxy_backend_balance_method: 'roundrobin'
+        #haproxy_backend_servers: {{ haproxy_backend_servers + "{{ hostvars['{{ item }}']['back_servers'] }}"
+        haproxy_backend_servers: "{{ hostvars['serverb.lab.example.com']['back_servers'] + hostvars['serverc.lab.example.com']['back_servers'] }}" 
+     # loop: "{{ groups['webservers'] }}"
+      
+   # haproxy_backend_servers:
+    #  - name: serverb.lab.example.com
+    #    address: 172.25.250.11
+    #  - name: serverc.lab.example.com
+    #    address: 172.25.250.12
+  #tasks:
+  #  - set_fact:
+   #     haproxy_backend_servers:
+   #     - name: "{{ item }}"
+   #       address: "{{ hostvars[item]['default_ipv4']['addres'] }}"
+   #   with_items: "{{ groups['webservers'] }}"
+   # - name: print
+   #   debug:
+  #      msg: "The variable is {{ haproxy_backend_servers }}"
+    - name: task of printing
+      debug:
+        msg: "The variable is  {{ haproxy_backend_servers }}"
+  roles:
+    - geerlingguy.haproxy

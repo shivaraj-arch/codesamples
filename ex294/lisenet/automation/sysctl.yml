@@ -1,0 +1,13 @@
+---
+- name: sysctl
+  hosts: all
+  tasks:
+    - name: swap
+      set_fact:
+        vm.swappiness: 10
+      when: ansible_memtotal_mb > 2048
+
+    - name: swap 2
+      debug:
+        msg: "Server Memory less than 2048 MB: {{ ansible_memtotal_mb }}"
+      when: ansible_memtotal_mb < 2048

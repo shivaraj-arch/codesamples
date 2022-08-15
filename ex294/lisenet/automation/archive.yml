@@ -1,0 +1,19 @@
+---
+- name: archive play
+  hosts: database
+  become: true
+  tasks:
+        - name: check directory
+          file:
+            path: /mnt/mysql_backups
+            state: directory
+
+        - name: archive
+          copy:
+            content: 'dev,test,qa,prod'
+            dest: /mnt/mysql_backups/database_list.txt
+        - name: archive 2
+          archive:
+            path: /mnt/mysql_backups/database_list.txt
+            dest: /mnt/mysql_backups/archive.gz
+            format: gz

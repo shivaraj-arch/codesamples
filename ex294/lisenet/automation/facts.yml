@@ -1,0 +1,30 @@
+---
+- name: facts
+  hosts: database
+  become: true
+  tasks:
+    - name: create facts 
+      file:
+        path: /etc/ansible/facts.d
+        state: directory
+        
+    - name: create custom file
+      copy:
+        content: |
+                [sample_exam]
+                server_role=mysql
+        dest: /etc/ansible/facts.d/custom.fact
+    - name: set facty
+      set_fact:
+        ansible_local:
+          custom:
+            sample_exam:
+              server_role: mysql
+    - debug:
+        var: ansible_local.custom.sample_exam.server_role
+    - setup:
+        gather_subset: local
+      register: result
+    - debug:
+        var: result.custom
+                

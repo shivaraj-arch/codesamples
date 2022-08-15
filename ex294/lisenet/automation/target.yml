@@ -1,0 +1,10 @@
+---
+- name: target play
+  hosts: webservers
+  become: true
+  tasks:
+    - name: set default target
+      file:
+        src: /usr/lib/systemd/system/graphical.target
+        dest: /etc/systemd/system/default.target
+        state: link

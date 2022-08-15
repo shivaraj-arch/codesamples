@@ -1,0 +1,52 @@
+--- 
+- name: user create task1
+  hosts: webservers
+  become: true
+  remote_user: automation
+  vars_files:
+    - user_list.yml
+    - secret.yml
+  tasks:
+  - user:
+            name: "{{ item.username }}"
+            uid: "{{ item.uid }}"
+            password: "{{ user_password | password_hash('sha512') }}"
+            groups: wheel
+            shell: '/bin/bash'
+            ssh_key_file: .ssh/id_rsa.pub
+    when: (item.uid | string)[0] == '1'
+    loop: "{{ users }}"
+  - name: ssh without pwd1
+    authorized_key:
+      key : "{{ lookup('file','.ssh/id_rsa.pub') }}"
+      user: "{{ item.username }}"
+      state: present
+    when: (item.uid | string)[0] == '1'
+    loop: "{{ users }}"
+
+
+- name: user create task2
+  hosts: database
+  become: true
+  remote_user: automation
+  vars_files:
+    - user_list.yml
+    - secret.yml
+  tasks:
+  - user:
+            name: "{{ item.username }}"
+            uid: "{{ item.uid }}"
+            password: "{{ user_password | password_hash('sha512') }}"
+            groups: wheel
+            shell: '/bin/bash'
+            ssh_key_file: .ssh/id_rsa.pub
+    when: (item.uid | string)[0] == '2'
+    loop: "{{ users }}"
+  - name: ssh without pwd2
+    authorized_key:
+      key : "{{ lookup('file','.ssh/id_rsa.pub') }}"
+      user: "{{ item.username }}"
+      state: present
+    when: (item.uid | string)[0] == '2'
+    loop: "{{ users }}"
+        

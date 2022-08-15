@@ -1,0 +1,10 @@
+--- 
+- name: mysql
+  hosts: database
+  become: true
+  roles:
+    - sample-mysql
+      
+      
+
+

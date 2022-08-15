@@ -1,0 +1,6 @@
+---
+# handlers file for sample-apache
+- name: restart httpd
+  service:
+    name: "{{ apache_svc }}"
+    state: restarted

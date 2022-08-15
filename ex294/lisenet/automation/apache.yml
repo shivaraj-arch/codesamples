@@ -1,0 +1,7 @@
+---
+- name: apache svc
+  hosts: webservers
+  become: true
+  roles:
+    - sample-apache
+
