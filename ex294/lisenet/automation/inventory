@@ -1,8 +1,0 @@
-[proxy]
-servera.lab.example.com
-[webservers]
-serverb.lab.example.com
-serverc.lab.example.com
-[database]
-serverd.lab.example.com
-
